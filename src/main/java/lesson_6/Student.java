@@ -9,18 +9,11 @@ public class Student {
     private int course;
     private List<Integer> grades;
 
-    public Student(String name, String group, int course) {
-        this.name = name;
-        this.group = group;
-        this.course = course;
-        this.grades = new ArrayList<>();
-    }
-
     public Student(String name, String group, int course, List<Integer> grades) {
         this.name = name;
         this.group = group;
         this.course = course;
-        this.grades = grades;
+        this.grades = new ArrayList<>(grades);
     }
 
     public String getName() {

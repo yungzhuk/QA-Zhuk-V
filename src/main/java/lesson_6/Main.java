@@ -6,24 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Main {
-    // метод переводит студентов на следующий курс
-    public static void promoteStudents(Set<Student> students) {
-        for (Student student : students) {
-            if(student.getAverageGrade() >= 3) {
-                student.setCourse(student.getCourse() + 1);
-            }
-        }
-    }
-
-    // метод, который получает список студентов и номер курса
-    public static void printStudents(Set<Student> students, int course) {
-        System.out.println("Студенты на " + course + " курсе:");
-        for (Student student : students) {
-            if (student.getCourse() == course) {
-                System.out.println(" - " + student.getName());
-            }
-        }
-    }
 
     public static void main(String[] args) {
         // задание 1
@@ -83,15 +65,15 @@ public class Main {
         }
 
         // переводим студентов на +1 курс
-        promoteStudents(students);
+        StudentService.promoteStudents(students);
         System.out.println("Студенты переведены на следующий курс:");
         for (Student s : students) {
             s.printShortInfo();
         }
 
         // имена тех студентов, которые обучаются на данном курсе
-        printStudents(students, 2);
-        printStudents(students, 4);
+        StudentService.printStudents(students, 2);
+        StudentService.printStudents(students, 4);
 
         // задание 2
         PhoneBook book = new PhoneBook();
