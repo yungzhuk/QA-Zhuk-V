@@ -13,7 +13,7 @@ public class PostmanEchoTests {
                 .queryParam("foo1", "bar1")
                 .queryParam("foo2", "bar2")
                 .when()
-                .get("https://postman-echo.com/get")  // ← полный URL
+                .get("https://postman-echo.com/get")
                 .then()
                 .log().all()
                 .statusCode(200)
@@ -80,7 +80,7 @@ public class PostmanEchoTests {
                 .then()
                 .statusCode(200)
                 .body("data", equalTo(data))
-                .body("json", nullValue()); // PATCH с text/plain не возвращает json
+                .body("json", nullValue());
     }
 
     @Test
