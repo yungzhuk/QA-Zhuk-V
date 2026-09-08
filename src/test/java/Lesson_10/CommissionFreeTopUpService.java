@@ -1,5 +1,6 @@
 package Lesson_10;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CommissionFreeTopUpService {
     private final WebDriver driver;
-    private WebDriverWait wait;
+    private final WebDriverWait wait;
 
     public static final String CATEGORY_COMMUNICATION = "Услуги связи";
     public static final String CATEGORY_HOME_INTERNET = "Домашний интернет";
@@ -49,6 +50,7 @@ public class CommissionFreeTopUpService {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
+    @Step("Выбор категории")
     public CommissionFreeTopUpService selectCategory(String categoryName) {
         WebElement arrow = wait.until(ExpectedConditions.elementToBeClickable(DROPDOWN_ARROW));
         arrow.click();
@@ -60,43 +62,50 @@ public class CommissionFreeTopUpService {
         return this;
     }
 
+    @Step("Получение текста плейсхолдера")
     public String getPlaceholderText(By locator) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator))
                 .getAttribute("placeholder");
     }
 
+    @Step("Проверка  плейсхолдера")
     public void assertPlaceholder(By locator, String expected) {
         assertEquals(expected, getPlaceholderText(locator));
     }
 
+    @Step("Проверка 'Услуги связи'")
     public void assertServiceSection() {
         assertPlaceholder(PHONE, "Номер телефона");
         assertPlaceholder(SUM, "Сумма");
         assertPlaceholder(EMAIL, "E-mail для отправки чека");
     }
 
+    @Step("Проверка 'Домашний интернет'")
     public void assertHomeInternet() {
         assertServiceSection(); // плейсхолделы одни и те же
     }
 
+    @Step("Проверка 'Рассрочка'")
     public void assertInstalment() {
         assertPlaceholder(ACCOUNT_NUMBER44, "Номер счета на 44");
         assertPlaceholder(SUM, "Сумма");
         assertPlaceholder(EMAIL, "E-mail для отправки чека");
     }
 
+    @Step("Проверка 'Задолженность'")
     public void assertDebt() {
         assertPlaceholder(ACCOUNT_NUMBER, "Номер счета на 2073");
         assertPlaceholder(SUM, "Сумма");
         assertPlaceholder(EMAIL, "E-mail для отправки чека");
     }
 
-    // часть 2
+    @Step("Заполнение поля элемента")
     public void fillField(By locator, String text) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator))
                 .sendKeys(text);
     }
 
+    @Step("Заполнение формы и переход во фрейм оплаты")
     public void fillElements() {
         fillField(PHONE, "297777777");
         fillField(SUM, "10");
@@ -107,16 +116,18 @@ public class CommissionFreeTopUpService {
         wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(PAYMENT_WINDOW));
     }
 
+    @Step("Получение текста из локатора")
     public String getText(By locator) {
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator))
                 .getText().trim();
     }
 
+    @Step("Проверка совпадения текста в элементе")
     public void assertPaymentText(By locator, String expected) {
         assertEquals(expected, getText(locator));
     }
 
-    // проверяем корректное отображение суммы и номера телефона в тексте
+    @Step("Проверяем корректное отображение суммы и номера телефона в тексте")
     public void assertPaymentCorrectText() {
         String actualText = getText(PAYMENT_PHONE_TEXT);
 
@@ -136,13 +147,14 @@ public class CommissionFreeTopUpService {
                 "Кнопка должна содержать '10.00 BYN'");
     }
 
-    // проверяем плейсхолдеры
+    @Step("Получение лейбла поля ввода")
     public String getPaymentLabelText(By locator) {
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         String text = element.getText().trim();
         return text;
     }
 
+    @Step("Проверка плейсхолдеров полей ввода")
     public void assertPaymentCorrectPlaceholder() {
         assertEquals("Номер карты", getPaymentLabelText(PAYMENT_PLACEHOLDER_CARD_NUMBER));
         assertEquals("Срок действия", getPaymentLabelText(PAYMENT_PLACEHOLDER_EXPIRATION_DATE));
@@ -150,6 +162,7 @@ public class CommissionFreeTopUpService {
         assertEquals("Имя и фамилия на карте", getPaymentLabelText(PAYMENT_PLACEHOLDER_HOLDER));
     }
 
+    @Step("Проверка отображения логотипов платёжных систем")
     public void assertPaymentLogos() {
         By[] logos = {PAYMENT_LOGO_VISA, PAYMENT_LOGO_MASTERCARD, PAYMENT_LOGO_BELKART, PAYMENT_LOGO_MIR};
 
